@@ -1,0 +1,31 @@
+{
+    "name": "paveljurasek/aukro-api-nette",
+    "description": "Aukro.cz WebAPI client integration for Nette",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.0",
+        "paveljurasek/aukro-api": "^1.0",
+        "nette/di": "^2.4"
+    },
+    "require-dev": {
+        "nette/tester": "^1.7",
+        "phpstan/phpstan": "^0.6.4",
+        "phpstan/phpstan-nette": "^0.6.2",
+        "mockery/mockery": "^0.9.9",
+        "tracy/tracy": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "AukroApi\\": "src"
+        }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon -l5 src/ --ansi",
+        "tester": "vendor/bin/tester tests/",
+        "all": [
+            "@phpstan",
+            "@tester"
+        ]
+    }
+}
