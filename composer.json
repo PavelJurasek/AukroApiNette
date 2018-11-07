@@ -6,14 +6,15 @@
     "require": {
         "php": "^7.0",
         "paveljurasek/aukro-api": "^1.0",
-        "nette/di": "^2.4"
+        "nette/di": "^2.4",
+        "doctrine/orm": "^2.6"
     },
     "require-dev": {
-        "nette/tester": "^1.7",
-        "phpstan/phpstan": "^0.6.4",
-        "phpstan/phpstan-nette": "^0.6.2",
+        "nette/tester": "^2.1",
+        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan-nette": "^0.10",
         "mockery/mockery": "^0.9.9",
-        "tracy/tracy": "^2.4"
+        "tracy/tracy": "^2.5"
     },
     "autoload": {
         "psr-4": {

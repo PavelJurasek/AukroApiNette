@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AukroApi\DI;
 
@@ -46,7 +46,8 @@ class AukroApiExtension extends CompilerExtension
 
 		// identity
 		$container->addDefinition($this->prefix('identity'))
-			->setClass(Identity::class, [
+			->setType(Identity::class)
+			->setArguments([
 				$config['username'],
 				$config['password'],
 				$config['apiKey'],
@@ -55,35 +56,37 @@ class AukroApiExtension extends CompilerExtension
 		// driver
 		if (isset($config['driver']) && !class_exists($config['driver'])) {
 			throw new ClassNotFoundException(sprintf('Driver class %s not found.', $config['driver']));
-		} else {
-			if ($container->getByType(GuzzleClient::class) === NULL) {
-				$container->addDefinition($this->prefix('httpClient'))
-					->setClass(GuzzleClient::class);
-			}
-
-			$config['driver'] = GuzzleSoapClientDriver::class;
 		}
 
+		if ($container->getByType(GuzzleClient::class) === NULL) {
+			$container->addDefinition($this->prefix('httpClient'))
+				->setType(GuzzleClient::class);
+		}
+
+		$config['driver'] = GuzzleSoapClientDriver::class;
+
 		$container->addDefinition($this->prefix('driver'))
-			->setClass($config['driver']);
+			->setType($config['driver']);
 
 		// soap client
 		$container->addDefinition($this->prefix('soapClient'))
-			->setClass(SoapClient::class, [$config['url']]);
+			->setType(SoapClient::class)
+			->setArguments([$config['url']]);
 
 		// session handler
 		if (isset($config['sessionHandler']) && !class_exists($config['sessionHandler'])) {
 			throw new ClassNotFoundException(sprintf('Session handler class %s not found.', $config['sessionHandler']));
-		} else {
-			$config['sessionHandler'] = NetteSessionHandler::class;
 		}
 
+		$config['sessionHandler'] = NetteSessionHandler::class;
+
 		$container->addDefinition($this->prefix('sessionHandler'))
-			->setClass($config['sessionHandler']);
+			->setType($config['sessionHandler']);
 
 		// api client
 		$container->addDefinition($this->prefix('client'))
-			->setClass(Client::class, [
+			->setType(Client::class)
+			->setArguments([
 				'@'.$this->prefix('identity'),
 				$config['countryCode'],
 				$config['versionKey'],
